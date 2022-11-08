@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        const encoder = new VideoEncoder( {
+            output: chunk => {
+                console.log('Success', chunk);
+            },
+            error: err => {
+                console.log('Cannot encode', err);
+            }
+        });
+
+        encoder.configure({
+                codec : 'avc1.4d0028',
+                width: 568,
+                height: 320,
+                hardwareAcceleration: 'prefer-hardware',
+                avc:{ format: 'avc'}
+            });
+
+        createImageBitmap(new ImageData(1,1)).then((blackpixel) => {
+            const keyframe = new VideoFrame(blackpixel, {duration: 33333, timestamp: 0 });
+            encoder.encode(keyframe);
+            keyframe.close();
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>
